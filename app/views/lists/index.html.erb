@@ -1,0 +1,58 @@
+
+<h1>List Items:</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Items</th>
+      <th>Status</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @lists.each do |list| %>
+    
+    <% if list.completed %>
+
+      <tr class="table-secondary">
+        <td class="striker"><%= link_to list.description, edit_list_path(list) %></td>
+        <td>
+          <center>
+            <%= form_for(list) do |f| %>
+            <%= f.text_field :description, type: 'hidden' %>
+            <%= f.check_box :completed, :checked => false, :style => 'visibility: hidden' %>
+            <%= f.submit "Uncross", class: "btn btn-warning btn-sm" %>
+            <% end %>
+          </center>
+        </td>
+        <td><%= link_to 'Edit', edit_list_path(list), class:'btn btn-primary btn-sm' %></td>
+        <td><%= link_to 'Delete', list, class:'btn btn-danger btn-sm', method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    
+    <% else %>
+    
+      <tr>
+      <td><%= link_to list.description, edit_list_path(list) %></td>
+      <td>
+        <center>
+          <%= form_for(list) do |f| %>
+          <%= f.text_field :description, type: 'hidden' %>
+          <%= f.check_box :completed, :checked => true, :style => 'visibility: hidden' %>
+          <%= f.submit "Cross Off", class: "btn btn-warning btn-sm" %>
+          <% end %>
+        </center>
+      </td>
+      <td><%= link_to 'Edit', edit_list_path(list), class:'btn btn-primary btn-sm' %></td>
+      <td><%= link_to 'Delete', list, class:'btn btn-danger btn-sm', method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+      
+    <% end %>
+  <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New List', new_list_path, class:'btn btn-success' %>
+<br>
+<%= link_to 'Delete All Items', home_trash_em_all_path, data: { confirm: 'Are you sure?'}, class:'btn btn-danger' %>
